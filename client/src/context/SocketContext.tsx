@@ -179,6 +179,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
   const clearLiarResult = () => {
     setLiarResult(null);
+    setLastAccuserSocketId(null); // Réinitialiser aussi l'ID de l'accusateur
   };
 
   const clearWinner = () => {
