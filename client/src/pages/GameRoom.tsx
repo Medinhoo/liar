@@ -42,7 +42,15 @@ const GameRoom = () => {
 
   const handlePlayCards = (cardIds: string[]) => {
     setSelectedCardIds(cardIds);
-    setShowDeclareModal(true);
+    
+    // Si c'est le premier coup (pas de lastPlay), montrer la modal pour choisir la valeur
+    // Sinon, jouer automatiquement avec la valeur imposée
+    if (!gameState.lastPlay) {
+      setShowDeclareModal(true);
+    } else {
+      // Jouer automatiquement avec la valeur imposée par le premier joueur
+      playCards(cardIds, gameState.lastPlay.declaredValue);
+    }
   };
 
   const handleDeclareCards = (declaredValue: string) => {
