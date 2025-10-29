@@ -77,9 +77,8 @@ const DeclareCardsModal = ({ isOpen, cardCount, onConfirm, onCancel }: DeclareCa
               {/* Résumé */}
               <div className="bg-gray-700 rounded-lg p-4 mb-6">
                 <p className="text-center text-white text-xl">
-                  Je déclare jouer <span className="font-bold text-yellow-400">{cardCount}</span>{' '}
-                  <span className="font-bold text-yellow-400">{selectedValue}</span>
-                  {cardCount > 1 ? 's' : ''}
+                  Je déclare jouer <span className="font-bold text-yellow-400">{cardCount}x</span> la carte{' '}
+                  <span className="font-bold text-yellow-400">"{selectedValue}"</span>
                 </p>
               </div>
 

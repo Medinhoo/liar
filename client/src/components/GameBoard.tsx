@@ -76,8 +76,7 @@ const GameBoard = ({ gameState, currentPlayerId, onCallLiar }: GameBoardProps) =
               <span className="font-bold text-yellow-400">{gameState.lastPlay.playerName}</span> a joué
             </p>
             <p className="text-2xl font-bold text-yellow-400 mt-2">
-              {gameState.lastPlay.cardCount} {gameState.lastPlay.declaredValue}
-              {gameState.lastPlay.cardCount > 1 ? 's' : ''}
+              {gameState.lastPlay.cardCount}x la carte "{gameState.lastPlay.declaredValue}"
             </p>
           </motion.div>
         )}
