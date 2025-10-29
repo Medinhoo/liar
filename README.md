@@ -172,4 +172,4 @@ Si vous rencontrez des problèmes :
 
 ## 📄 Licence
 
-Ce projet est un MVP éducatif sans licence spécifique.
+Ce projet est un MVP éducatif sans licence spécifique
