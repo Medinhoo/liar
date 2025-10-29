@@ -103,8 +103,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     newSocket.on('liar_called', (data) => {
       console.log('🚨 MENTEUR appelé par', data.accuserName);
-      // Stocker l'ID du socket de l'accusateur (c'est nous qui avons appelé)
-      setLastAccuserSocketId(newSocket.id || null);
+      // Ne rien faire ici - on stocke l'ID dans callLiar()
     });
 
     newSocket.on('liar_result', (data) => {
@@ -168,6 +167,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
   const callLiar = () => {
     if (socket && connected && roomId) {
+      // Stocker notre ID avant d'émettre l'événement
+      setLastAccuserSocketId(socket.id || null);
       socket.emit('call_liar', { roomId });
     }
   };
