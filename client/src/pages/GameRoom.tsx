@@ -18,7 +18,8 @@ const GameRoom = () => {
     liarResult,
     clearLiarResult,
     winner,
-    clearWinner
+    clearWinner,
+    lastAccuserSocketId
   } = useSocket();
 
   const [showDeclareModal, setShowDeclareModal] = useState(false);
@@ -116,6 +117,7 @@ const GameRoom = () => {
           loserName={liarResult.loserName}
           winnerName={liarResult.winnerName}
           pileCount={liarResult.pileCount}
+          showCards={socket.id === lastAccuserSocketId}
           onClose={handleCloseLiarResult}
         />
       )}

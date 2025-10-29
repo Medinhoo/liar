@@ -10,6 +10,7 @@ interface LiarResultModalProps {
   loserName: string;
   winnerName: string;
   pileCount: number;
+  showCards: boolean; // Nouveau paramètre pour afficher ou non les cartes
   onClose: () => void;
 }
 
@@ -21,6 +22,7 @@ const LiarResultModal = ({
   loserName,
   winnerName,
   pileCount,
+  showCards,
   onClose
 }: LiarResultModalProps) => {
   return (
@@ -65,24 +67,35 @@ const LiarResultModal = ({
                 )}
               </motion.div>
 
-              {/* Cartes révélées */}
-              <div className="mb-6">
-                <p className="text-gray-300 text-center mb-4">
-                  Déclaration : <span className="font-bold text-yellow-400">{revealedCards.length} {declaredValue}</span>
-                </p>
-                <div className="flex justify-center gap-3 flex-wrap">
-                  {revealedCards.map((card, index) => (
-                    <motion.div
-                      key={card.id}
-                      initial={{ rotateY: 180, opacity: 0 }}
-                      animate={{ rotateY: 0, opacity: 1 }}
-                      transition={{ delay: 0.3 + index * 0.1, duration: 0.5 }}
-                    >
-                      <Card card={card} disabled small />
-                    </motion.div>
-                  ))}
+              {/* Cartes révélées (seulement pour l'accusateur) */}
+              {showCards ? (
+                <div className="mb-6">
+                  <p className="text-gray-300 text-center mb-4">
+                    Déclaration : <span className="font-bold text-yellow-400">{revealedCards.length}x la carte "{declaredValue}"</span>
+                  </p>
+                  <div className="flex justify-center gap-3 flex-wrap">
+                    {revealedCards.map((card, index) => (
+                      <motion.div
+                        key={card.id}
+                        initial={{ rotateY: 180, opacity: 0 }}
+                        animate={{ rotateY: 0, opacity: 1 }}
+                        transition={{ delay: 0.3 + index * 0.1, duration: 0.5 }}
+                      >
+                        <Card card={card} disabled small />
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="mb-6">
+                  <p className="text-gray-300 text-center text-lg">
+                    Les cartes ont été vérifiées par l'accusateur
+                  </p>
+                  <p className="text-gray-500 text-center text-sm mt-2">
+                    (Seul l'accusateur peut voir les cartes révélées)
+                  </p>
+                </div>
+              )}
 
               {/* Résultat */}
               <motion.div

@@ -11,6 +11,7 @@ interface SocketContextType {
   error: string | null;
   liarResult: LiarResult | null;
   winner: string | null;
+  lastAccuserSocketId: string | null;
   createRoom: (playerName: string) => void;
   joinRoom: (roomId: string, playerName: string) => void;
   startGame: () => void;
@@ -38,6 +39,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const [liarResult, setLiarResult] = useState<LiarResult | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
+  const [lastAccuserSocketId, setLastAccuserSocketId] = useState<string | null>(null);
 
   useEffect(() => {
     // Créer la connexion Socket.IO
@@ -101,6 +103,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     newSocket.on('liar_called', (data) => {
       console.log('🚨 MENTEUR appelé par', data.accuserName);
+      // Stocker l'ID du socket de l'accusateur (c'est nous qui avons appelé)
+      setLastAccuserSocketId(newSocket.id || null);
     });
 
     newSocket.on('liar_result', (data) => {
@@ -190,6 +194,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         error,
         liarResult,
         winner,
+        lastAccuserSocketId,
         createRoom,
         joinRoom,
         startGame,
