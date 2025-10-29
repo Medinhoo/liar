@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: menteur
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production

@@ -24,7 +24,11 @@ interface SocketContextType {
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
-const SOCKET_URL = 'http://localhost:3001';
+// En production, utiliser l'URL actuelle (même domaine)
+// En développement, utiliser localhost:3001
+const SOCKET_URL = import.meta.env.PROD 
+  ? window.location.origin 
+  : 'http://localhost:3001';
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);

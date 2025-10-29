@@ -2,19 +2,36 @@ const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 const gameManager = require('./gameManager');
 
 const app = express();
 const httpServer = createServer(app);
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 // Configuration CORS
-app.use(cors());
+if (isProduction) {
+  // En production, accepter toutes les origines (Render)
+  app.use(cors());
+} else {
+  // En développement, limiter aux URLs locales
+  app.use(cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"]
+  }));
+}
+
 app.use(express.json());
+
+// Servir les fichiers statiques du client en production
+if (isProduction) {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
 
 // Configuration Socket.IO avec CORS
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://localhost:5173", "http://localhost:5174"], // URL du client Vite
+    origin: isProduction ? "*" : ["http://localhost:5173", "http://localhost:5174"],
     methods: ["GET", "POST"]
   }
 });
@@ -23,6 +40,13 @@ const io = new Server(httpServer, {
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', games: gameManager.games.size });
 });
+
+// En production, servir index.html pour toutes les autres routes (SPA)
+if (isProduction) {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+}
 
 // Gestion des connexions Socket.IO
 io.on('connection', (socket) => {
