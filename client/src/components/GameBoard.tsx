@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import CardBack from './CardBack';
 import type { GameState } from '../types/game';
 
@@ -9,8 +9,6 @@ interface GameBoardProps {
 }
 
 const GameBoard = ({ gameState, currentPlayerId, onCallLiar }: GameBoardProps) => {
-  const currentPlayer = gameState.players.find(p => p.socketId === currentPlayerId);
-  const isMyTurn = gameState.players[gameState.currentPlayerIndex]?.socketId === currentPlayerId;
   // Le bouton MENTEUR est visible pour tous SAUF celui qui vient de jouer
   const canCallLiar = gameState.lastPlay && gameState.lastPlay.playerSocketId !== currentPlayerId;
 
