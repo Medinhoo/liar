@@ -4,7 +4,7 @@
   "description": "Jeu de cartes Menteur multijoueur",
   "scripts": {
     "install:all": "npm install && cd server && npm install && cd ../client && npm install",
-    "build": "cd server && npm install && cd ../client && npm install && npm run build && cd .. && mkdir -p server/public && cp -r client/dist/* server/public/",
+    "build": "cd server && npm install && cd ../client && npm install --include=dev && npm run build && cd .. && mkdir -p server/public && cp -r client/dist/* server/public/",
     "start": "cd server && npm start",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev"
