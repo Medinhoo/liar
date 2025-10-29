@@ -31,8 +31,7 @@ const Home = () => {
       >
         {/* Logo et titre */}
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-white mb-2">🃏 Menteur</h1>
-          <p className="text-gray-400">Jeu de cartes multijoueur</p>
+          <h1 className="text-5xl font-bold text-white mb-2">🃏 Couilleux</h1>
           <div className="mt-4">
             {connected ? (
               <span className="text-green-400 text-sm">● Connecté</span>
@@ -93,7 +92,7 @@ const Home = () => {
           >
             <div>
               <label className="block text-gray-300 mb-2 font-semibold">
-                Votre nom
+                Ton nom
               </label>
               <input
                 type="text"
@@ -134,7 +133,7 @@ const Home = () => {
           >
             <div>
               <label className="block text-gray-300 mb-2 font-semibold">
-                Votre nom
+                Ton nom
               </label>
               <input
                 type="text"

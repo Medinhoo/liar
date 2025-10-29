@@ -215,7 +215,8 @@ class GameManager {
       winner = game.players.find(p => p.socketId === game.lastPlay.playerSocketId);
       accuser.hand.push(...game.pile);
       
-      // Le tour continue normalement (déjà passé au suivant)
+      // C'est de nouveau le tour du joueur accusé à tort
+      game.currentPlayerIndex = game.players.findIndex(p => p.socketId === game.lastPlay.playerSocketId);
     }
 
     const result = {
