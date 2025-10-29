@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Card from './Card';
 import type { Card as CardType } from '../types/game';
@@ -11,6 +11,46 @@ interface PlayerHandProps {
 
 const PlayerHand = ({ cards, onPlayCards, isMyTurn }: PlayerHandProps) => {
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
+
+  // Fonction de tri des cartes
+  const sortedCards = useMemo(() => {
+    const suitOrder = { 'hearts': 0, 'diamonds': 1, 'clubs': 2, 'spades': 3 };
+    const valueOrder: { [key: string]: number } = {
+      'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
+      '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13
+    };
+
+    return [...cards].sort((a, b) => {
+      // Trier d'abord par valeur, puis par couleur
+      const valueCompare = valueOrder[a.value] - valueOrder[b.value];
+      if (valueCompare !== 0) return valueCompare;
+      return suitOrder[a.suit] - suitOrder[b.suit];
+    });
+  }, [cards]);
+
+  // Détection automatique des familles (4 cartes de même valeur)
+  const { displayedCards, removedFamilies } = useMemo(() => {
+    // Grouper les cartes par valeur
+    const cardsByValue: { [key: string]: CardType[] } = {};
+    sortedCards.forEach(card => {
+      if (!cardsByValue[card.value]) {
+        cardsByValue[card.value] = [];
+      }
+      cardsByValue[card.value].push(card);
+    });
+
+    // Trouver les familles complètes (4 cartes)
+    const families = Object.values(cardsByValue).filter(group => group.length === 4);
+    
+    // Retirer les familles de l'affichage
+    const familyCardIds = new Set(families.flat().map(card => card.id));
+    const cardsToDisplay = sortedCards.filter(card => !familyCardIds.has(card.id));
+    
+    return {
+      displayedCards: cardsToDisplay,
+      removedFamilies: families
+    };
+  }, [sortedCards]);
 
   const toggleCardSelection = (cardId: string) => {
     if (!isMyTurn) return;
@@ -47,8 +87,20 @@ const PlayerHand = ({ cards, onPlayCards, isMyTurn }: PlayerHandProps) => {
         )}
       </div>
       
+      {/* Notification des familles retirées */}
+      {removedFamilies.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mb-4 bg-purple-600 text-white px-4 py-2 rounded-lg text-center font-semibold"
+        >
+          🎉 Famille de {removedFamilies[0][0].value} retirée automatiquement !
+        </motion.div>
+      )}
+
+      {/* Affichage des cartes triées (sans les familles) */}
       <div className="flex justify-center items-end gap-2 flex-wrap max-w-6xl mx-auto mb-4">
-        {cards.map((card, index) => {
+        {displayedCards.map((card, index) => {
           const isSelected = selectedCards.includes(card.id);
           return (
             <motion.div
@@ -79,7 +131,7 @@ const PlayerHand = ({ cards, onPlayCards, isMyTurn }: PlayerHandProps) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex justify-center"
+          className="flex justify-center mt-8"
         >
           <button
             onClick={handlePlayCards}

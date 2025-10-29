@@ -52,14 +52,14 @@ const LiarResultModal = ({
                   <>
                     <div className="text-6xl mb-4">🤥</div>
                     <h2 className="text-4xl font-bold text-red-500 mb-2">
-                      C'était un mensonge !
+                      Bien sûr qu'c'est un couilleux ! Ce sale vicieux..
                     </h2>
                   </>
                 ) : (
                   <>
                     <div className="text-6xl mb-4">✅</div>
                     <h2 className="text-4xl font-bold text-green-500 mb-2">
-                      Ce n'était pas un mensonge !
+                      Eh non, c'était pas un mensonge ! Tout le monde n'est pas aussi vicieux que toi 🙂
                     </h2>
                   </>
                 )}
